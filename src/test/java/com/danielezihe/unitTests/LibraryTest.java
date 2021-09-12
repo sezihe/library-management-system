@@ -1,7 +1,6 @@
 package com.danielezihe.unitTests;
 
 import com.danielezihe.Book;
-import com.danielezihe.JuniorStudent;
 import com.danielezihe.Library;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,13 +14,12 @@ import java.util.Map;
  * @author EZIHE S. DANIEL
  * CreatedAt: 12/09/2021
  */
-class JuniorStudentTest {
-    private JuniorStudent juniorStudent;
-    private Map<Book, Integer> bookInventory;
+public class LibraryTest {
     private Library library;
+    private Map<Book, Integer> bookInventory;
 
     public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
-    
+
     @BeforeAll
     @Disabled("Not implemented yet")
     void setUp() {
@@ -29,39 +27,38 @@ class JuniorStudentTest {
         DOMConfigurator.configure("./src/main/log4j.xml");
 
         populateBooksInventory();
-
-        juniorStudent = new JuniorStudent("Daniel", 20);
         library = new Library(bookInventory);
     }
 
     @Test
-    @DisplayName("Checks if a Book request returns the actual book requested")
+    @DisplayName("Checks if Library gives out the correct requested book")
     @Disabled("Not implemented yet")
-    void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN298";
+    void checksIfLibraryGivesOutTheCorrectRequestedBook() {
+        String requestedBookId = "SN135";
+        String requestedBookTitle = "Clean Code";
 
-        Book requestedBook = juniorStudent.requestBook(bookId);
-        Book correctBookWithThatId = juniorStudent.requestBook(bookId);
+        Book book = library.giveOutBook(requestedBookId);
 
-        logger.info("Requested Book: " + requestedBook);
-        logger.info("Correct Book To be given: " + correctBookWithThatId);
-
-        Assertions.assertEquals(correctBookWithThatId, requestedBook);
-        Assertions.assertSame(correctBookWithThatId, requestedBook);
+        Assertions.assertEquals(requestedBookTitle, book.getTitle());
     }
 
     @Test
-    @DisplayName("Checks if a Book request returns 'Book Taken' if book is taken")
+    @DisplayName("Checks if Library says 'Book Taken' when requested book has been taken")
     @Disabled("Not implemented yet")
-    void checksIfABookRequestReturnsBookTakenIfBookIsTaken() {
-        String bookId = "SN100";
+    void checksIfLibrarySaysBookTakenWhenRequestedBookHasBeenTaken() {
+        String bookId = "SN155";
 
-        // simulate a user taking a book
-        Book book = juniorStudent.requestBook(bookId);
-        logger.info("(Simulated) Library giving out book with Title: " + book.getTitle());
+        // simulate a request coming in for a book
+        Book book = library.giveOutBook(bookId);
+        logger.info("(SIMULATED) Library is giving out book with Title: " + book.getTitle());
 
-        Assertions.assertEquals("Book Taken", juniorStudent.requestBook(bookId));
+        Assertions.assertEquals("Book Taken", library.giveOutBook(bookId));
     }
+
+    
+
+
+    // UTILITIES
 
     void populateBooksInventory() {
         bookInventory = new HashMap<>();
@@ -77,5 +74,4 @@ class JuniorStudentTest {
         bookInventory.put("SN100", new Book("SN100", "Cracking the Coding Interview", new String[]{"Gayle Laakmann McDowell"}, 1));
         bookInventory.put("SN110", new Book("SN110", "Rework", new String[]{"Jason Fried", "David Heinemeier Hansson"}, 2));
     }
-
 }
