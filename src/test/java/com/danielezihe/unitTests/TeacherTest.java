@@ -1,9 +1,6 @@
 package com.danielezihe.unitTests;
 
-import com.danielezihe.Book;
-import com.danielezihe.Library;
-import com.danielezihe.LibraryManager;
-import com.danielezihe.SeniorStudent;
+import com.danielezihe.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -14,10 +11,10 @@ import java.util.Map;
 
 /**
  * @author EZIHE S. DANIEL
- * CreatedAt: 12/09/2021
+ * CreatedAt: 13/09/2021
  */
-public class SeniorStudentTest {
-    private SeniorStudent seniorStudent;
+public class TeacherTest {
+    private Teacher teacher;
     private Map<String, Book> bookInventory;
     private Library library;
     private LibraryManager libraryManager;
@@ -32,7 +29,7 @@ public class SeniorStudentTest {
 
         populateBooksInventory();
 
-        seniorStudent = new SeniorStudent("Daniel", 20);
+        teacher = new Teacher("John", "JSS2", "English");
         libraryManager = new LibraryManager(bookInventory);
         library = new Library(libraryManager);
     }
@@ -43,7 +40,7 @@ public class SeniorStudentTest {
     void checksIfABookRequestReturnsTheActualBookRequested() {
         String bookId = "SN988";
 
-        Book requestedBook = seniorStudent.requestBook(bookId);
+        Book requestedBook = teacher.requestBook(bookId);
         Book correctBookWithThatId = libraryManager.getBook(bookId);
 
         logger.info("Requested Book: " + requestedBook);
@@ -60,10 +57,10 @@ public class SeniorStudentTest {
         String bookId = "SN126";
 
         // simulate a Student taking a book
-        Book book = seniorStudent.requestBook(bookId);
+        Book book = teacher.requestBook(bookId);
         logger.info("(Simulated) Library giving out book with Title: " + book.getTitle());
 
-        Assertions.assertEquals("Book Taken", seniorStudent.requestBook(bookId));
+        Assertions.assertEquals("Book Taken", teacher.requestBook(bookId));
     }
 
     void populateBooksInventory() {
@@ -80,5 +77,4 @@ public class SeniorStudentTest {
         bookInventory.put("SN100", new Book("SN100", "Cracking the Coding Interview", new String[]{"Gayle Laakmann McDowell"}, 1));
         bookInventory.put("SN110", new Book("SN110", "Rework", new String[]{"Jason Fried", "David Heinemeier Hansson"}, 2));
     }
-
 }

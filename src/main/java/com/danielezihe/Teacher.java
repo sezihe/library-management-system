@@ -4,5 +4,5 @@ package com.danielezihe;
  * @author EZIHE S. DANIEL
  * CreatedAt: 12/09/2021
  */
-public abstract class Teacher implements LibraryMember {
+public class Teacher implements LibraryMember {
 }
