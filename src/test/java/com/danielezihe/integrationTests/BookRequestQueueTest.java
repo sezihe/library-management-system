@@ -35,10 +35,6 @@ public class BookRequestQueueTest {
                 "BookRequest:seniorStudent:SN298, BookRequest:teacher:SN298"})
     @DisplayName("Check that priority is given to a Teacher over a Student when a request comes in")
     void shouldConfirmThatTheTeacherIsOnTopOfThePriorityQueue(@ConvertWith(BookRequestConverter.class) BookRequest studentRequest, @ConvertWith(BookRequestConverter.class) BookRequest teacherRequest) {
-        // BookRequest juniorStudentRequest = new BookRequest(juniorStudent, "SN100");
-        // BookRequest seniorStudentRequest = new BookRequest(seniorStudent, "SN100");
-        // BookRequest teacherRequest = new BookRequest(teacher, "SN100");
-
         BookRequest[] requests = new BookRequest[]{studentRequest, teacherRequest};
 
         library.addToWaitingQueue(requests);
@@ -56,7 +52,6 @@ public class BookRequestQueueTest {
             "BookRequest:juniorStudent:SN282, BookRequest:seniorStudent:SN282"})
     @DisplayName("Check that priority is given to a Senior Student over a Junior when a request comes in")
     void shouldConfirmThatTheSeniorStudentIsAboveTheJuniorOnThePriorityQueue(@ConvertWith(BookRequestConverter.class) BookRequest juniorStudentRequest, @ConvertWith(BookRequestConverter.class) BookRequest seniorStudentRequest) {
-
         BookRequest[] requests = new BookRequest[]{juniorStudentRequest, seniorStudentRequest};
 
         library.addToWaitingQueue(requests);

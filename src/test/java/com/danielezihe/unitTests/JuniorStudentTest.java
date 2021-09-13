@@ -8,6 +8,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +41,10 @@ class JuniorStudentTest {
         juniorStudent = new JuniorStudent("Daniel", 20, library);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN298", "SN135", "SN282", "SN110"})
     @DisplayName("Checks if a Book request returns the actual book requested")
-    void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN298";
-
+    void checksIfABookRequestReturnsTheActualBookRequested(String bookId) {
         Book requestedBook = juniorStudent.requestBook(bookId);
         Book correctBookWithThatId = libraryManager.getBook(bookId);
 
@@ -53,11 +55,10 @@ class JuniorStudentTest {
         Assertions.assertSame(correctBookWithThatId, requestedBook);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN155", "SN988", "SN100", "SN126"})
     @DisplayName("Checks if a Book request returns 'Book Taken' if book is taken")
-    void checksIfABookRequestReturnsBookTakenIfBookIsTaken() {
-        String bookId = "SN100";
-
+    void checksIfABookRequestReturnsBookTakenIfBookIsTaken(String bookId) {
         // simulate a user taking a book
         Book book = juniorStudent.requestBook(bookId);
         logger.info("(Simulated) Library giving out book with Title: " + book.getTitle());
@@ -65,6 +66,7 @@ class JuniorStudentTest {
         Assertions.assertEquals("Book Taken", juniorStudent.requestBook(bookId));
     }
 
+    // UTILITIES
     void populateBooksInventory() {
         bookInventory = new HashMap<>();
         bookInventory.put("SN182", new Book("SN182", "The Pragmatic Programmer", new String[]{"David Thomas", "Andrew Hunt"}, 5));

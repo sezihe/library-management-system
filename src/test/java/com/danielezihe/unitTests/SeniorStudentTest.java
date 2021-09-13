@@ -8,6 +8,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +39,10 @@ public class SeniorStudentTest {
         seniorStudent = new SeniorStudent("Daniel", 20, library);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN792", "SN122", "SN282", "SN110"})
     @DisplayName("Checks if a Book request returns the actual book requested")
-    void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN182";
-
+    void checksIfABookRequestReturnsTheActualBookRequested(String bookId) {
         Book requestedBook = seniorStudent.requestBook(bookId);
         Book correctBookWithThatId = libraryManager.getBook(bookId);
 
@@ -52,11 +53,10 @@ public class SeniorStudentTest {
         Assertions.assertSame(correctBookWithThatId, requestedBook);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN155", "SN988", "SN100", "SN126"})
     @DisplayName("Checks if a Book request returns 'Book Taken' if book is taken")
-    void checksIfABookRequestReturnsBookTakenIfBookIsTaken() {
-        String bookId = "SN126";
-
+    void checksIfABookRequestReturnsBookTakenIfBookIsTaken(String bookId) {
         // simulate a Student taking a book
         Book book = seniorStudent.requestBook(bookId);
         logger.info("(Simulated) Library giving out book with Title: " + book.getTitle());
@@ -64,6 +64,7 @@ public class SeniorStudentTest {
         Assertions.assertEquals("Book Taken", seniorStudent.requestBook(bookId));
     }
 
+    // UTILITIES
     void populateBooksInventory() {
         bookInventory = new HashMap<>();
         bookInventory.put("SN182", new Book("SN182", "The Pragmatic Programmer", new String[]{"David Thomas", "Andrew Hunt"}, 5));

@@ -74,7 +74,7 @@ public class LibraryManagerTest {
 
 
 
-
+    // UTILITIES
     void populateBooksInventory() {
         bookInventory = new HashMap<>();
         bookInventory.put("SN182", new Book("SN182", "The Pragmatic Programmer", new String[]{"David Thomas", "Andrew Hunt"}, 5));

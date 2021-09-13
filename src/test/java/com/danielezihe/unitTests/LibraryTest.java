@@ -5,6 +5,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,8 @@ public class LibraryTest {
         library = new Library(libraryManager);
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN792", "SN122", "SN282", "SN110"})
     @DisplayName("Checks if Library gives out the correct requested book")
     void checksIfLibraryGivesOutTheCorrectRequestedBook() {
         String requestedBookId = "SN135";
@@ -44,11 +47,10 @@ public class LibraryTest {
         Assertions.assertEquals(requestedBookTitle, book.getTitle());
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"SN155", "SN988", "SN100", "SN126"})
     @DisplayName("Checks if Library says 'Book Taken' when requested book has been taken")
-    void checksIfLibrarySaysBookTakenWhenRequestedBookHasBeenTaken() {
-        String bookId = "SN155";
-
+    void checksIfLibrarySaysBookTakenWhenRequestedBookHasBeenTaken(String bookId) {
         BookRequest bookRequest = new BookRequest(new JuniorStudent("Daniel", 18, library), bookId);
 
         // simulate a request coming in for a book
