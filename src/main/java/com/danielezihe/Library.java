@@ -14,7 +14,7 @@ import java.util.PriorityQueue;
  * CreatedAt: 12/09/2021
  */
 public class Library {
-    private LibraryManager libraryManager;
+    private final LibraryManager libraryManager;
     private PriorityQueue<BookRequest> requests;
 
     public static final Logger logger = LogManager.getLogger(Library.class);
@@ -68,7 +68,7 @@ public class Library {
         this.requests.addAll(Arrays.asList(requests));
     }
 
-    private class RequestComparator implements Comparator<BookRequest> {
+    private static class RequestComparator implements Comparator<BookRequest> {
         @Override
         public int compare(BookRequest o1, BookRequest o2) {
             if(o1.libraryMember() instanceof Teacher && o2.libraryMember() instanceof Student) {

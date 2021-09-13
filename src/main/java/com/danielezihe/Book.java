@@ -6,7 +6,7 @@ package com.danielezihe;
  */
 public final class Book {
     private String Id;
-    private String title;
+    private final String title;
     private String[] authors;
     private int quantityInStock;
 

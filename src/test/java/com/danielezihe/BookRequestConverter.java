@@ -11,7 +11,7 @@ import java.util.Map;
  * @author EZIHE S. DANIEL
  * CreatedAt: 13/09/2021
  */
-public class BookRequestConverter extends SimpleArgumentConverter {
+public final class BookRequestConverter extends SimpleArgumentConverter {
     private LibraryManager libraryManager;
     private Library library;
     private Teacher teacher;
