@@ -5,5 +5,6 @@ package com.danielezihe;
  * CreatedAt: 12/09/2021
  */
 public interface LibraryMember {
-
+    <T> T requestBook(String bookId);
+    void borrowStatus();
 }

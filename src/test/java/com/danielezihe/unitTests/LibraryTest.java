@@ -18,14 +18,15 @@ public class LibraryTest {
     private Map<String, Book> bookInventory;
     LibraryManager libraryManager;
 
-    public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
+    public static final Logger logger = LogManager.getLogger(LibraryTest.class);
 
-    @BeforeAll
-    @Disabled("Not implemented yet")
-    void setUp() {
+    static {
         // Log4j
         DOMConfigurator.configure("./src/main/log4j.xml");
+    }
 
+    @BeforeEach
+    void setUp() {
         populateBooksInventory();
         libraryManager = new LibraryManager(bookInventory);
         library = new Library(libraryManager);
@@ -33,12 +34,11 @@ public class LibraryTest {
 
     @Test
     @DisplayName("Checks if Library gives out the correct requested book")
-    @Disabled("Not implemented yet")
     void checksIfLibraryGivesOutTheCorrectRequestedBook() {
         String requestedBookId = "SN135";
         String requestedBookTitle = "Clean Code";
 
-        BookRequest bookRequest = new BookRequest(JuniorStudent.class, requestedBookId);
+        BookRequest bookRequest = new BookRequest(new JuniorStudent("Daniel", 18, library), requestedBookId);
         Book book = library.giveOutBook(bookRequest);
 
         Assertions.assertEquals(requestedBookTitle, book.getTitle());
@@ -46,11 +46,10 @@ public class LibraryTest {
 
     @Test
     @DisplayName("Checks if Library says 'Book Taken' when requested book has been taken")
-    @Disabled("Not implemented yet")
     void checksIfLibrarySaysBookTakenWhenRequestedBookHasBeenTaken() {
         String bookId = "SN155";
 
-        BookRequest bookRequest = new BookRequest(JuniorStudent.class, bookId);
+        BookRequest bookRequest = new BookRequest(new JuniorStudent("Daniel", 18, library), bookId);
 
         // simulate a request coming in for a book
         Book book = library.giveOutBook(bookRequest);

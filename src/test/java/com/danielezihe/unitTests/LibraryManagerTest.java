@@ -20,13 +20,16 @@ public class LibraryManagerTest {
     private Map<String, Book> bookInventory;
     private LibraryManager libraryManager;
 
-    public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
+    public static final Logger logger = LogManager.getLogger(LibraryManagerTest.class);
+
+    static {
+        DOMConfigurator.configure("./src/main/log4j.xml");
+    }
 
     @BeforeEach
     void setUp() {
-        DOMConfigurator.configure("./src/main/log4j.xml");
         populateBooksInventory();
-        libraryManager = new LibraryManager(libraryManager);
+        libraryManager = new LibraryManager(bookInventory);
     }
 
     @ParameterizedTest

@@ -23,23 +23,23 @@ class JuniorStudentTest {
     private LibraryManager libraryManager;
 
     public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
-    
-    @BeforeEach
-    @Disabled("Not implemented yet")
-    void setUp() {
-        // Log4j
-        DOMConfigurator.configure("./src/main/log4j.xml");
 
+    static {
+        // Log4j
+        DOMConfigurator.configure("src/main/log4j.xml");
+    }
+
+    @BeforeEach
+    void setUp() {
         populateBooksInventory();
 
-        juniorStudent = new JuniorStudent("Daniel", 20);
         libraryManager = new LibraryManager(bookInventory);
         library = new Library(libraryManager);
+        juniorStudent = new JuniorStudent("Daniel", 20, library);
     }
 
     @Test
     @DisplayName("Checks if a Book request returns the actual book requested")
-    @Disabled("Not implemented yet")
     void checksIfABookRequestReturnsTheActualBookRequested() {
         String bookId = "SN298";
 
@@ -55,7 +55,6 @@ class JuniorStudentTest {
 
     @Test
     @DisplayName("Checks if a Book request returns 'Book Taken' if book is taken")
-    @Disabled("Not implemented yet")
     void checksIfABookRequestReturnsBookTakenIfBookIsTaken() {
         String bookId = "SN100";
 

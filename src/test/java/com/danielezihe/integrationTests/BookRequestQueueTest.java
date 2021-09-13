@@ -14,6 +14,7 @@ import java.util.PriorityQueue;
  * CreatedAt: 12/09/2021
  */
 public class BookRequestQueueTest {
+    private LibraryManager libraryManager;
     private Library library;
     private Teacher teacher;
     private JuniorStudent juniorStudent;
@@ -25,10 +26,11 @@ public class BookRequestQueueTest {
     void setUp() {
         populateBooksInventory();
 
-        library = new Library(bookInventory);
+        libraryManager = new LibraryManager(bookInventory);
+        library = new Library(libraryManager);
         teacher = new Teacher("John", "JSS2", "English");
-        juniorStudent = new JuniorStudent("Philips", 18);
-        seniorStudent = new SeniorStudent("Sarah", 20);
+        juniorStudent = new JuniorStudent("Philips", 18, library);
+        seniorStudent = new SeniorStudent("Sarah", 20, library);
     }
 
     @ParameterizedTest
