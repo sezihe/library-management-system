@@ -14,7 +14,16 @@ public class SeniorStudent extends Student {
 
     @Override
     public <T> T requestBook(String bookId) {
-        return null;
+        var result = library.giveOutBook(new BookRequest(this, bookId));
+        if(result == null) {
+            return null;
+        } else if(result.equals("Book Taken")) {
+            return (T) "Book Taken";
+        } else if(result instanceof Book){
+            return (T) result;
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -40,7 +40,7 @@ public class SeniorStudentTest {
     @Test
     @DisplayName("Checks if a Book request returns the actual book requested")
     void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN988";
+        String bookId = "SN182";
 
         Book requestedBook = seniorStudent.requestBook(bookId);
         Book correctBookWithThatId = libraryManager.getBook(bookId);

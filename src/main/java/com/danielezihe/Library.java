@@ -34,7 +34,6 @@ public class Library {
             return (T) "Book Taken";
         } else if(result instanceof Book){
             logger.info("(BOOK BORROWED) Giving out book named '" + ((Book) result).getTitle() + "' to " + bookRequest.libraryMember().getClass().getSimpleName());
-            ((Book) result).decreaseBookQuantityCount();
             return (T) result;
         } else {
             logger.error("Fatal error: " + result);
@@ -60,7 +59,6 @@ public class Library {
                 logger.error("Book Taken");
             } else {
                 logger.info("(BOOK BORROWED) Giving out book named '" + ((Book) result).getTitle() + "' to " + request.libraryMember().getClass().getSimpleName());
-                ((Book) result).decreaseBookQuantityCount();
             }
         }
     }

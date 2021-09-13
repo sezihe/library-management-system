@@ -21,6 +21,7 @@ public class LibraryManager {
         if(book.getQuantityInStock() < 1)
             return (T) "Book Taken";
 
+        book.decreaseBookQuantityCount();
         return (T) book;
     }
 }

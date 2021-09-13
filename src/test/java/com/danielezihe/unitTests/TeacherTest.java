@@ -29,15 +29,15 @@ public class TeacherTest {
     void setUp() {
         populateBooksInventory();
 
-        teacher = new Teacher("John", "JSS2", "English");
         libraryManager = new LibraryManager(bookInventory);
         library = new Library(libraryManager);
+        teacher = new Teacher("John", "JSS2", "English", library);
     }
 
     @Test
     @DisplayName("Checks if a Book request returns the actual book requested")
     void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN988";
+        String bookId = "SN182";
 
         Book requestedBook = teacher.requestBook(bookId);
         Book correctBookWithThatId = libraryManager.getBook(bookId);

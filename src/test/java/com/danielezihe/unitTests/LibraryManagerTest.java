@@ -2,11 +2,13 @@ package com.danielezihe.unitTests;
 
 import com.danielezihe.Book;
 import com.danielezihe.LibraryManager;
+import com.danielezihe.NullableConverter;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.HashMap;
@@ -51,12 +53,12 @@ public class LibraryManagerTest {
     @DisplayName("Checks if getBook method call returns 'Book Taken' when book is taken")
     void shouldReturnBookTakenWhenABookIsTaken(String bookId, String expectedOutput) {
         // simulate taking the book
-        libraryManager.getBook(bookId);
+        Book book = libraryManager.getBook(bookId);
         logger.info("(SIMULATED) Giving out book with ID: " + bookId);
 
-        var book = libraryManager.getBook(bookId);
+        var result = libraryManager.getBook(bookId);
 
-        Assertions.assertEquals(expectedOutput, book);
+        Assertions.assertEquals(expectedOutput, result);
     }
 
     @ParameterizedTest
@@ -64,7 +66,7 @@ public class LibraryManagerTest {
                 "SN2000, null",
                 "SN1000, null"})
     @DisplayName("Checks if getBook method call returns null when book does not exist")
-    void shouldReturnNullWhenABookDoesNotExist(String bookId, Book expectedOutput) {
+    void shouldReturnNullWhenABookDoesNotExist(String bookId, @ConvertWith(NullableConverter.class) Book expectedOutput) {
         Book book = libraryManager.getBook(bookId);
 
         Assertions.assertEquals(expectedOutput, book);
