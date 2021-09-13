@@ -3,6 +3,7 @@ package com.danielezihe.unitTests;
 import com.danielezihe.Book;
 import com.danielezihe.JuniorStudent;
 import com.danielezihe.Library;
+import com.danielezihe.LibraryManager;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -17,12 +18,13 @@ import java.util.Map;
  */
 class JuniorStudentTest {
     private JuniorStudent juniorStudent;
-    private Map<Book, Integer> bookInventory;
+    private Map<String, Book> bookInventory;
     private Library library;
+    private LibraryManager libraryManager;
 
     public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
     
-    @BeforeAll
+    @BeforeEach
     @Disabled("Not implemented yet")
     void setUp() {
         // Log4j
@@ -31,7 +33,8 @@ class JuniorStudentTest {
         populateBooksInventory();
 
         juniorStudent = new JuniorStudent("Daniel", 20);
-        library = new Library(bookInventory);
+        libraryManager = new LibraryManager(bookInventory);
+        library = new Library(libraryManager);
     }
 
     @Test
@@ -41,7 +44,7 @@ class JuniorStudentTest {
         String bookId = "SN298";
 
         Book requestedBook = juniorStudent.requestBook(bookId);
-        Book correctBookWithThatId = juniorStudent.requestBook(bookId);
+        Book correctBookWithThatId = libraryManager.getBook(bookId);
 
         logger.info("Requested Book: " + requestedBook);
         logger.info("Correct Book To be given: " + correctBookWithThatId);

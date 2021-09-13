@@ -1,69 +1,74 @@
 package com.danielezihe.unitTests;
 
 import com.danielezihe.Book;
-import com.danielezihe.Library;
 import com.danielezihe.LibraryManager;
-import com.danielezihe.SeniorStudent;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author EZIHE S. DANIEL
- * CreatedAt: 12/09/2021
+ * CreatedAt: 13/09/2021
  */
-public class SeniorStudentTest {
-    private SeniorStudent seniorStudent;
+public class LibraryManagerTest {
     private Map<String, Book> bookInventory;
-    private Library library;
     private LibraryManager libraryManager;
 
     public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
 
-    @BeforeAll
-    @Disabled("Not implemented yet")
+    @BeforeEach
     void setUp() {
-        // Log4j
         DOMConfigurator.configure("./src/main/log4j.xml");
-
         populateBooksInventory();
-
-        seniorStudent = new SeniorStudent("Daniel", 20);
-        libraryManager = new LibraryManager(bookInventory);
-        library = new Library(libraryManager);
+        libraryManager = new LibraryManager(libraryManager);
     }
 
-    @Test
-    @DisplayName("Checks if a Book request returns the actual book requested")
-    @Disabled("Not implemented yet")
-    void checksIfABookRequestReturnsTheActualBookRequested() {
-        String bookId = "SN988";
+    @ParameterizedTest
+    @CsvSource({"SN182, The Pragmatic Programmer",
+                "SN135, Clean Code",
+                "SN122, Code Complete",
+                "SN155, Refactoring"})
+    @DisplayName("Checks if getBook method call returns the right book")
+    void shouldReturnACorrectBook(String bookId, String expectedBookTitle) {
+        Book book = libraryManager.getBook(bookId);
 
-        Book requestedBook = seniorStudent.requestBook(bookId);
-        Book correctBookWithThatId = libraryManager.getBook(bookId);
-
-        logger.info("Requested Book: " + requestedBook);
-        logger.info("Correct Book To be given: " + correctBookWithThatId);
-
-        Assertions.assertEquals(correctBookWithThatId, requestedBook);
-        Assertions.assertSame(correctBookWithThatId, requestedBook);
+        Assertions.assertEquals(expectedBookTitle, book.getTitle());
     }
 
-    @Test
-    @DisplayName("Checks if a Book request returns 'Book Taken' if book is taken")
-    void checksIfABookRequestReturnsBookTakenIfBookIsTaken() {
-        String bookId = "SN126";
+    @ParameterizedTest
+    @CsvSource({"SN155, Book Taken",
+            "SN988, Book Taken",
+            "SN100, Book Taken"})
+    @DisplayName("Checks if getBook method call returns 'Book Taken' when book is taken")
+    void shouldReturnBookTakenWhenABookIsTaken(String bookId, String expectedOutput) {
+        // simulate taking the book
+        libraryManager.getBook(bookId);
+        logger.info("(SIMULATED) Giving out book with ID: " + bookId);
 
-        // simulate a Student taking a book
-        Book book = seniorStudent.requestBook(bookId);
-        logger.info("(Simulated) Library giving out book with Title: " + book.getTitle());
+        var book = libraryManager.getBook(bookId);
 
-        Assertions.assertEquals("Book Taken", seniorStudent.requestBook(bookId));
+        Assertions.assertEquals(expectedOutput, book);
     }
+
+    @ParameterizedTest
+    @CsvSource({"SN500, null",
+                "SN2000, null",
+                "SN1000, null"})
+    @DisplayName("Checks if getBook method call returns null when book does not exist")
+    void shouldReturnNullWhenABookDoesNotExist(String bookId, Book expectedOutput) {
+        Book book = libraryManager.getBook(bookId);
+
+        Assertions.assertEquals(expectedOutput, book);
+    }
+
+
+
 
     void populateBooksInventory() {
         bookInventory = new HashMap<>();
@@ -79,5 +84,4 @@ public class SeniorStudentTest {
         bookInventory.put("SN100", new Book("SN100", "Cracking the Coding Interview", new String[]{"Gayle Laakmann McDowell"}, 1));
         bookInventory.put("SN110", new Book("SN110", "Rework", new String[]{"Jason Fried", "David Heinemeier Hansson"}, 2));
     }
-
 }

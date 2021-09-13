@@ -1,7 +1,6 @@
 package com.danielezihe.unitTests;
 
-import com.danielezihe.Book;
-import com.danielezihe.Library;
+import com.danielezihe.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -16,7 +15,8 @@ import java.util.Map;
  */
 public class LibraryTest {
     private Library library;
-    private Map<Book, Integer> bookInventory;
+    private Map<String, Book> bookInventory;
+    LibraryManager libraryManager;
 
     public static final Logger logger = LogManager.getLogger(JuniorStudentTest.class);
 
@@ -27,7 +27,8 @@ public class LibraryTest {
         DOMConfigurator.configure("./src/main/log4j.xml");
 
         populateBooksInventory();
-        library = new Library(bookInventory);
+        libraryManager = new LibraryManager(bookInventory);
+        library = new Library(libraryManager);
     }
 
     @Test
@@ -37,7 +38,8 @@ public class LibraryTest {
         String requestedBookId = "SN135";
         String requestedBookTitle = "Clean Code";
 
-        Book book = library.giveOutBook(requestedBookId);
+        BookRequest bookRequest = new BookRequest(JuniorStudent.class, requestedBookId);
+        Book book = library.giveOutBook(bookRequest);
 
         Assertions.assertEquals(requestedBookTitle, book.getTitle());
     }
@@ -48,14 +50,16 @@ public class LibraryTest {
     void checksIfLibrarySaysBookTakenWhenRequestedBookHasBeenTaken() {
         String bookId = "SN155";
 
+        BookRequest bookRequest = new BookRequest(JuniorStudent.class, bookId);
+
         // simulate a request coming in for a book
-        Book book = library.giveOutBook(bookId);
+        Book book = library.giveOutBook(bookRequest);
         logger.info("(SIMULATED) Library is giving out book with Title: " + book.getTitle());
 
-        Assertions.assertEquals("Book Taken", library.giveOutBook(bookId));
+        Assertions.assertEquals("Book Taken", library.giveOutBook(bookRequest));
     }
 
-    
+
 
 
     // UTILITIES
