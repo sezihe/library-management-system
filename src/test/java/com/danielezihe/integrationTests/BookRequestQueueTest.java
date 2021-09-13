@@ -3,6 +3,7 @@ package com.danielezihe.integrationTests;
 import com.danielezihe.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.HashMap;
@@ -16,9 +17,6 @@ import java.util.PriorityQueue;
 public class BookRequestQueueTest {
     private LibraryManager libraryManager;
     private Library library;
-    private Teacher teacher;
-    private JuniorStudent juniorStudent;
-    private SeniorStudent seniorStudent;
     private Map<String, Book> bookInventory;
 
     @BeforeEach
@@ -28,25 +26,22 @@ public class BookRequestQueueTest {
 
         libraryManager = new LibraryManager(bookInventory);
         library = new Library(libraryManager);
-        teacher = new Teacher("John", "JSS2", "English");
-        juniorStudent = new JuniorStudent("Philips", 18, library);
-        seniorStudent = new SeniorStudent("Sarah", 20, library);
     }
 
     @ParameterizedTest
-    @CsvSource({"new BookRequest(juniorStudent, \"SN100\");, teacherRequest = new BookRequest(teacher, \"SN100\");",
-                "new BookRequest(seniorStudent, \"SN100\");, teacherRequest = new BookRequest(teacher, \"SN100\");"})
-    @Disabled("Not implemented yet")
+    @CsvSource({"BookRequest:juniorStudent:SN100, BookRequest:teacher:SN100",
+                "BookRequest:seniorStudent:SN988, BookRequest:teacher:SN988",
+                "BookRequest:juniorStudent:SN122, BookRequest:teacher:SN122",
+                "BookRequest:seniorStudent:SN298, BookRequest:teacher:SN298"})
     @DisplayName("Check that priority is given to a Teacher over a Student when a request comes in")
-    void checkThatPriorityIsGivenToATeacherOtherThanAStudentWhenARequestComesIn(BookRequest studentRequest,
-                                                                                BookRequest teacherRequest) {
-//        BookRequest juniorStudentRequest = new BookRequest(juniorStudent, "SN100");
-//        BookRequest seniorStudentRequest = new BookRequest(seniorStudent, "SN100");
-//        BookRequest teacherRequest = new BookRequest(teacher, "SN100");
+    void shouldConfirmThatTheTeacherIsOnTopOfThePriorityQueue(@ConvertWith(BookRequestConverter.class) BookRequest studentRequest, @ConvertWith(BookRequestConverter.class) BookRequest teacherRequest) {
+        // BookRequest juniorStudentRequest = new BookRequest(juniorStudent, "SN100");
+        // BookRequest seniorStudentRequest = new BookRequest(seniorStudent, "SN100");
+        // BookRequest teacherRequest = new BookRequest(teacher, "SN100");
 
         BookRequest[] requests = new BookRequest[]{studentRequest, teacherRequest};
 
-        library.giveOutBook(requests);
+        library.addToWaitingQueue(requests);
 
         PriorityQueue<BookRequest> waitingQueue = library.getQueue();
 
@@ -54,16 +49,17 @@ public class BookRequestQueueTest {
         Assertions.assertSame(teacherRequest, waitingQueue.peek());
     }
 
-    @Test
-    @Disabled("Not implemented yet")
+    @ParameterizedTest
+    @CsvSource({"BookRequest:juniorStudent:SN100, BookRequest:seniorStudent:SN100",
+            "BookRequest:juniorStudent:SN110, BookRequest:seniorStudent:SN110",
+            "BookRequest:juniorStudent:SN155, BookRequest:seniorStudent:SN155",
+            "BookRequest:juniorStudent:SN282, BookRequest:seniorStudent:SN282"})
     @DisplayName("Check that priority is given to a Senior Student over a Junior when a request comes in")
-    void checkThatPriorityIsGivenToASeniorStudentOtherThanAJuniorWhenARequestComesIn() {
-        BookRequest juniorStudentRequest = new BookRequest(juniorStudent, "SN100");
-        BookRequest seniorStudentRequest = new BookRequest(seniorStudent, "SN100");
+    void shouldConfirmThatTheSeniorStudentIsAboveTheJuniorOnThePriorityQueue(@ConvertWith(BookRequestConverter.class) BookRequest juniorStudentRequest, @ConvertWith(BookRequestConverter.class) BookRequest seniorStudentRequest) {
 
         BookRequest[] requests = new BookRequest[]{juniorStudentRequest, seniorStudentRequest};
 
-        library.giveOutBook(requests);
+        library.addToWaitingQueue(requests);
 
         PriorityQueue<BookRequest> waitingQueue = library.getQueue();
 

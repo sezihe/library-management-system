@@ -63,16 +63,21 @@ public class Library {
         }
     }
 
+    public void addToWaitingQueue(BookRequest[] requests) {
+        this.requests = new PriorityQueue<>(requests.length, new RequestComparator());
+        this.requests.addAll(Arrays.asList(requests));
+    }
+
     private class RequestComparator implements Comparator<BookRequest> {
         @Override
         public int compare(BookRequest o1, BookRequest o2) {
             if(o1.libraryMember() instanceof Teacher && o2.libraryMember() instanceof Student) {
-                return 1;
+                return -1;
             } else if(o1.libraryMember() instanceof Student) {
                 if(o1.libraryMember() instanceof SeniorStudent && o2.libraryMember() instanceof JuniorStudent) {
-                    return 1;
-                } else {
                     return -1;
+                } else {
+                    return 1;
                 }
             }
             return 0;
