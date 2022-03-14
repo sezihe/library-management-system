@@ -1,7 +1,6 @@
 # Mini Library Management System
-### [Encentral Solutions](https://www.encentralsolutions.com/) Intern Assessment
 
-A micro Library Management System that is managed with Maven and Built with Java
+A micro Library Management System API
 
 ## How to use
 - Ensure you have Java and Maven installed on your local computer.
